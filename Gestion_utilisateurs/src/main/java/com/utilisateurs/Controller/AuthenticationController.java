@@ -35,12 +35,8 @@ public class AuthenticationController {
     }
 
     @GetMapping("/validate")
-    public ResponseEntity<String> validateToken(@RequestParam("token") String token) {
-        boolean isValid = jwtService.validateToken(token);
-        if (isValid) {
-            return ResponseEntity.ok("Token is valid");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Token is invalid");
-        }
+    public String validateToken(@RequestParam("token") String token) {
+        jwtService.validateToken(token);
+        return "Token is valid";
     }
 }
