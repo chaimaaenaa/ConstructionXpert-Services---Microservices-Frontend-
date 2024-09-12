@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  # Project Service (Spring Boot)
+  project-service:
+    image: project-service:latest
+    build:
+      context: ./project-service
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JWT_SECRET=your-secret-key # Secret li katst3ml f JWT
+      - JWT_EXPIRATION=3600000     # Duration dial token f milliseconds
+    ports:
+      - "8082:8080"
+    networks:
+      - construction-network
+
+  # Resource Service (Spring Boot)
+  resource-service:
+    image: resource-service:latest
+    build:
+      context: ./resource-service
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JWT_SECRET=your-secret-key
+      - JWT_EXPIRATION=3600000
+    ports:
+      - "8083:8080"
+    networks:
+      - construction-network
+
+  # Task Service (Spring Boot)
+  task-service:
+    image: task-service:latest
+    build:
+      context: ./task-service
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JWT_SECRET=your-secret-key
+      - JWT_EXPIRATION=3600000
+    ports:
+      - "8084:8080"
+    networks:
+      - construction-network
+
+  # Gateway Service (Spring Boot)
+  gateway-service:
+    image: gateway-service:latest
+    build:
+      context: ./gateway
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - JWT_SECRET=your-secret-key
+      - JWT_EXPIRATION=3600000
+    ports:
+      - "8080:8080"
+    depends_on:
+      - project-service
+      - resource-service
+      - task-service
+    networks:
+      - construction-network
+
+  # Angular Frontend
+  frontend:
+    image: frontend:latest
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - gateway-service
+    networks:
+      - construction-network
+
+networks:
+  construction-network:
+    driver: bridge
