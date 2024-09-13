@@ -3,12 +3,13 @@ import { RouterOutlet } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
+
 // Import your components here
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { TasksComponent } from './components/tasks/tasks.component';
-import { ResourcesComponent } from './components/ressource/ressource.component';
+import { RessourceComponent } from './components/ressource/ressource.component';
 
 @Component({
   selector: 'app-root',

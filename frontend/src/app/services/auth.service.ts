@@ -6,7 +6,16 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
+
+
+
+
+
 export class AuthService {
+  getUserCount(): Observable<number> {
+    // Implementation
+  }
   private apiUrl = 'http://localhost:8084/api/users';
 
   constructor(private http: HttpClient) { }
