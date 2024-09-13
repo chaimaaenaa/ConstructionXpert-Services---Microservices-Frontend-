@@ -19,3 +19,6 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(request);
   }
 }
+
+export class authInterceptor {
+}
