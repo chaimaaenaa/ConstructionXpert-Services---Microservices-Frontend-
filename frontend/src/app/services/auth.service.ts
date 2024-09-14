@@ -1,25 +1,59 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Jwt } from '../models/Jwt';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { LoginData } from '../models/LoginData';
+import { RegisterData } from '../models/RegisterData';
+import { tap } from 'rxjs/operators';  // Import tap
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/api/auth'; // Change the URL as needed
+  private BASE_URL = "http://localhost:8765/api/v1/auth";
+  private readonly TOKEN_KEY = 'jwt';
+  private readonly ROLE_KEY = 'role';
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private jwtHelper: JwtHelperService
+  ) {}
 
-  // Method to check if the user is an admin
-  isAdmin(): boolean {
-    // Assuming you have a way to check if the user is an admin
-    const role = localStorage.getItem('userRole'); // Or you can fetch it from a token
-    return role === 'ADMIN';
+  register(registerdata: RegisterData): Observable<Jwt> {
+    return this.http.post<Jwt>(`${this.BASE_URL}/register`, registerdata);
   }
 
-  // Method to get the number of users from the backend
-  getUserCount(): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/users/count`);
+  login(logindata: LoginData): Observable<Jwt> {
+    return this.http.post<Jwt>(`${this.BASE_URL}/authenticate`, logindata).pipe(
+      tap((response: Jwt) => {
+        if (response && response.token) {
+          localStorage.setItem(this.TOKEN_KEY, response.token);
+          localStorage.setItem(this.ROLE_KEY, response.role);
+        }
+      })
+    );
+  }
+
+  logout(): void {
+    localStorage.removeItem(this.ROLE_KEY);
+    localStorage.removeItem(this.TOKEN_KEY);
+    this.router.navigate(['/login']);
+  }
+
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    return token != null && !this.jwtHelper.isTokenExpired(token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(this.TOKEN_KEY);
+  }
+
+  getRole(): string | null {
+    return localStorage.getItem(this.ROLE_KEY);
   }
 }
