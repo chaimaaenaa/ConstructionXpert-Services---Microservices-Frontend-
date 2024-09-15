@@ -12,13 +12,25 @@ import { tap } from 'rxjs/operators';  // Import tap
 @Injectable({
   providedIn: 'root'
 })
+
+
+
+
+
+
 export class AuthService {
+<<<<<<< HEAD
 <<<<<<< HEAD
 
   private BASE_URL = "http://localhost:8765/api/v1/auth";
   private readonly TOKEN_KEY = 'jwt';
   private readonly ROLE_KEY = 'role';
 =======
+=======
+  getUserCount(): Observable<number> {
+    // Implementation
+  }
+>>>>>>> chaimaa
   private apiUrl = 'http://localhost:8084/api/users';
 >>>>>>> 8b4f91577acdf1381a21e90c50dae9c0bb41ac2d
 
