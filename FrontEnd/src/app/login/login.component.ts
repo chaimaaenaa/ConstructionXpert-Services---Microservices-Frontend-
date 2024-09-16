@@ -27,14 +27,18 @@ export class LoginComponent implements OnInit{
   submitForm(): void {
     console.log(this.loginForm.value);
     this.service.login(this.loginForm.value).subscribe(
-      (response : Jwt) => {
-            const jwToken = response.token;
-            console.log("role is :",response.role)
-            localStorage.setItem('jwt', jwToken);
-            localStorage.setItem('role', response.role);
-           this.router.navigateByUrl("/dashboard")
-            this.router.navigate(['/dashboard']);
-        }
-    )
+      (response: Jwt) => {
+        const jwToken = response.token;
+        console.log("role is :", response.role);
+        localStorage.setItem('jwt', jwToken);
+        localStorage.setItem('role', response.role);
+        this.router.navigate(['/dashboard']);
+      },
+      (error) => {
+        console.error('Login error:', error);
+        // Handle error display to user
+      }
+    );
   }
+
 }
