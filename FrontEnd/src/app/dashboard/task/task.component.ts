@@ -12,13 +12,11 @@ import { MatPaginator } from '@angular/material/paginator';
 export class TaskComponent implements OnInit, AfterViewInit {
 
   dataSource = new MatTableDataSource<Task>([]);
-  displayColumns = ["id", "idProjet", "nom", "date_debut", "date_fin", "description", "statu", "action"];
+  displayColumns = [ "projectId", "description", "startDate", "endDate", "status", "action"];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(
-    private taskService: TaskService
-  ) {}
+  constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
     this.loadTasks();
@@ -29,8 +27,9 @@ export class TaskComponent implements OnInit, AfterViewInit {
   }
 
   loadTasks() {
-    this.taskService.getTasks().subscribe(
+    this.taskService.getAllTasks().subscribe(
       (data: Task[]) => {
+        console.log(data);
         this.dataSource.data = data;
       },
       (error) => {
@@ -38,4 +37,5 @@ export class TaskComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
 }

@@ -5,9 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 
-
-import { AuthService } from 'src/app/services/auth.service';
-
 @Component({
   selector: 'app-projet',
   templateUrl: './projet.component.html',
@@ -17,14 +14,14 @@ export class ProjetComponent implements OnInit, AfterViewInit {
 
   projets: Projet[] = [];
   dataSource = new MatTableDataSource<Projet>([]);
-  displayColumns = ["id", "nom", "startDate", "endDate", "description", "budget", "action"];
+  displayColumns = ["id", "name", "startDate", "endDate", "description", "budget", "action"];
   selection = new SelectionModel<Projet>(true, []);
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(
-    private projetService: ProjetService,
-    private authService:AuthService){}
+    private projetService: ProjetService
+  ) {}
 
   ngOnInit() {
     this.loadProjets();
@@ -35,13 +32,13 @@ export class ProjetComponent implements OnInit, AfterViewInit {
   }
 
   loadProjets() {
-    this.projetService.getProjets().subscribe(
+    this.projetService.getAllProjects().subscribe(
       (data: Projet[]) => {
         this.projets = data;
         this.dataSource.data = this.projets;
-        console.log(this.projets)
+        console.log(this.projets);
       },
-      (error) => {
+      (error: any) => { // Specify the type of error if possible
         console.log('Error fetching projets', error);
       }
     );

@@ -17,10 +17,9 @@ export class EditComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router,
     private projetService: ProjetService,
     private snackBar: MatSnackBar,
-    private location:Location
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -46,21 +45,19 @@ export class EditComponent implements OnInit {
   }
 
   loadProjectData() {
-    this.projetService.getProjetById(this.projectId).subscribe(
+    this.projetService.getProjectById(this.projectId).subscribe(
       (project) => {
         if (project) {
           this.projectForm.patchValue(project);
         } else {
           this.showError('Project not found');
           this.location.back();
-
         }
       },
       (error) => {
         this.showError('Failed to load project data');
         console.error('Error loading project:', error);
-       this.location.back();
-
+        this.location.back();
       }
     );
   }
@@ -68,11 +65,10 @@ export class EditComponent implements OnInit {
   onSubmit() {
     if (this.projectForm.valid) {
       const updatedProject = { ...this.projectForm.value, id: this.projectId };
-      this.projetService.editProjet(this.projectId, updatedProject).subscribe(
+      this.projetService.updateProject(this.projectId, updatedProject).subscribe(
         () => {
           this.showSuccess('Project updated successfully');
           this.location.back();
-
         },
         (error) => {
           this.showError('Failed to update project');
@@ -86,7 +82,6 @@ export class EditComponent implements OnInit {
 
   onCancel() {
     this.location.back();
-
   }
 
   private showSuccess(message: string) {

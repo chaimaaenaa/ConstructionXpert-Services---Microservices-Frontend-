@@ -3,46 +3,36 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Projet } from '../models/projet';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class ProjetService {
 
-  private apiUrl = "http://localhost:8765/api/projects";
+  private apiUrl = 'http://localhost:8765/api/projects';
 
   constructor(private http: HttpClient) { }
 
-
-
-
-  // Create new project
-  createNewProjet(projet: Projet): Observable<Projet> {
-    return this.http.post<Projet>(this.apiUrl, projet);
+  createProject(project: Projet): Observable<Projet> {
+    return this.http.post<Projet>(this.apiUrl, project);
   }
 
-  // Get all projects
-  getProjets(): Observable<Projet[]> {
-    return this.http.get<Projet[]>(this.apiUrl);
-  }
-
-  // Get a project by id
-  getProjetById(id: number): Observable<Projet> {
+  getProjectById(id: number): Observable<Projet> {
     return this.http.get<Projet>(`${this.apiUrl}/${id}`);
   }
 
-  // Edit project
-  editProjet(id: number, updateData: Projet): Observable<Projet> {
-    return this.http.put<Projet>(`${this.apiUrl}/${id}`, updateData);
+  updateProject(id: number, project: Projet): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}`, project);
   }
 
-  //  Delete project by id
-  deleteProjet(id: number): Observable<void> {
+  deleteProject(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
+  existProject(id: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/${id}/exist`);
+  }
 
-
-
-
+  getAllProjects(): Observable<Projet[]> {
+    return this.http.get<Projet[]>(this.apiUrl);
+  }
 }

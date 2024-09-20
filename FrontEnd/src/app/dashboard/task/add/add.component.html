@@ -1,3 +1,4 @@
+<!-- HTML -->
 <div class="task-form">
   <form [formGroup]="taskForm" (ngSubmit)="addTask()">
     <div>
@@ -17,7 +18,11 @@
 
     <div>
       <label for="status">Status</label>
-      <input id="status" formControlName="status" type="text" />
+      <select id="status" formControlName="status">
+        <option value="TODO">To Do</option>
+        <option value="IN_PROGRESS">In Progress</option>
+        <option value="COMPLETED">Completed</option>
+      </select>
     </div>
 
     <div>

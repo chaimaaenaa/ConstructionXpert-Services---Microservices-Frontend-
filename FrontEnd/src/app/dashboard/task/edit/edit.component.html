@@ -19,7 +19,9 @@
     </mat-form-field>
 
     <mat-form-field>
-      <input matInput placeholder="Status" formControlName="status">
+      <mat-select placeholder="Status" formControlName="status">
+        <mat-option *ngFor="let status of statusOptions" [value]="status">{{ status }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field>

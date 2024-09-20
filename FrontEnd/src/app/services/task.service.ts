@@ -3,44 +3,44 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Task } from '../models/task';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  private apiUrl = "http://localhost:8765/api/tasks";
+  private apiUrl = 'http://localhost:8765/api/tasks';
 
   constructor(private http: HttpClient) { }
 
-  // Create a new task
-  createTask(task: Task, idProjet: number): Observable<Task> {
-    return this.http.post<Task>(`${this.apiUrl}/${idProjet}`, task);
+  createTask(task: Task): Observable<Task> {
+    return this.http.post<Task>(this.apiUrl, task);
   }
 
-  // Get all tasks
-  getTasks(): Observable<Task[]> {
+  getAllTasks(): Observable<Task[]> {
     return this.http.get<Task[]>(this.apiUrl);
   }
 
-  // Get a task by ID
+  getTasksByProjectId(projectId: number): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.apiUrl}/project/${projectId}`);
+  }
+
+
   getTaskById(id: number): Observable<Task> {
     return this.http.get<Task>(`${this.apiUrl}/${id}`);
   }
 
-  // Update a task by ID
-  updateTask(id: number, updateData: Task): Observable<Task> {
-    return this.http.put<Task>(`${this.apiUrl}/${id}`, updateData);
+
+  updateTask(id: number, taskDetails: Task): Observable<Task> {
+    return this.http.put<Task>(`${this.apiUrl}/${id}`, taskDetails);
   }
 
-  // Delete a task by ID
+
   deleteTask(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
-  // Delete all tasks by project ID
-  deleteTasksByProjectId(projectId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/project/${projectId}`);
+
+  existTask(id: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/${id}/exist`);
   }
 }

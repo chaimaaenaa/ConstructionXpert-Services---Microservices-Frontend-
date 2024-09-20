@@ -4,18 +4,17 @@ import { Task } from 'src/app/models/task';
 import { TaskService } from 'src/app/services/task.service';
 import { RessourceService } from 'src/app/services/ressource.service';
 import { Location } from '@angular/common';
-import {Resource} from "../../../models/ressource";
-
+import { Resource } from "../../../models/ressource";
 
 @Component({
   selector: 'app-add',
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.css']
 })
-export class AddComponent {
+export class AddComponent implements OnInit {
 
   ressourceForm!: FormGroup;
-  tasks: Task[]= [];
+  tasks: Task[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -24,32 +23,27 @@ export class AddComponent {
     private location: Location
   ) {}
 
-
-  ngOnInit():void{
+  ngOnInit(): void {
     this.ressourceForm = this.fb.group({
-
       nom: ['', Validators.required],
       typee: ['', Validators.required],
       quantity: ['', Validators.required],
       taskId: [null, Validators.required]
     });
 
-    this.taskService.getTasks().subscribe((tasks)=>{
+    this.taskService.getAllTasks().subscribe((tasks) => {
       this.tasks = tasks;
-    })
+    });
   }
 
-  addRessource():void{
-    if(this.ressourceForm.valid){
+  addRessource(): void {
+    if (this.ressourceForm.valid) {
       const newRessource: Resource = this.ressourceForm.value;
 
-
-      this.ressourceService.createRessource(newRessource,newRessource.taskId).subscribe(()=>{
+      this.ressourceService.createRessource(newRessource, newRessource.taskId).subscribe(() => {
         console.log('Ressource added successfully!');
         this.location.back();
       });
     }
   }
-
-
 }

@@ -14,6 +14,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatListModule} from '@angular/material/list';
 import {MatCardModule} from '@angular/material/card';
+import {MatButtonModule} from "@angular/material/button";
 
 
 
@@ -22,16 +23,17 @@ import {MatCardModule} from '@angular/material/card';
     DashboardComponent,
     SidebarComponent,
   ],
-  imports: [
-    CommonModule,
-    DashboardRoutingModule,
+    imports: [
+        CommonModule,
+        DashboardRoutingModule,
 
-    //+++++++++++++++Angular material
-    MatToolbarModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatListModule,
-    MatCardModule
-  ]
+        //+++++++++++++++Angular material
+        MatToolbarModule,
+        MatIconModule,
+        MatSidenavModule,
+        MatListModule,
+        MatCardModule,
+        MatButtonModule
+    ]
 })
 export class DashboardModule { }

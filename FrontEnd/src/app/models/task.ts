@@ -4,5 +4,5 @@ export interface Task {
   startDate: string;
   endDate: string;
   status: 'TODO' | 'IN_PROGRESS' | 'COMPLETED';
-  projectId: number;
+  projectId: number
 }

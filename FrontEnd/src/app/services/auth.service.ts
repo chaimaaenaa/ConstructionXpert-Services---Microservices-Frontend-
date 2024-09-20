@@ -44,16 +44,11 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  isAuthenticated(): boolean {
-    const token = localStorage.getItem(this.TOKEN_KEY);
-    return token != null && !this.jwtHelper.isTokenExpired(token);
-  }
+
 
   getToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
-  getRole(): string | null {
-    return localStorage.getItem(this.ROLE_KEY);
-  }
+
 }

@@ -40,7 +40,7 @@ export class DeleteComponent   {
     this.loading = true;
     this.errorMessage = '';
     this.successMessage = '';
-    this.projetService.deleteProjet(this.id).pipe(
+    this.projetService.deleteProject(this.id).pipe(
       catchError((error) => {
         this.loading = false;
         this.errorMessage = `Error deleting project: ${error.message}`;

@@ -15,6 +15,9 @@ export class EditComponent implements OnInit {
   taskForm!: FormGroup;
   taskId!: number;
 
+  statusOptions: Array<'TODO' | 'IN_PROGRESS' | 'COMPLETED'> = ['TODO', 'IN_PROGRESS', 'COMPLETED'];
+
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -99,4 +102,6 @@ export class EditComponent implements OnInit {
   private showError(message: string) {
     this.snackBar.open(message, 'Close', { duration: 5000, panelClass: ['error-snackbar'] });
   }
+
+  protected readonly status = status;
 }

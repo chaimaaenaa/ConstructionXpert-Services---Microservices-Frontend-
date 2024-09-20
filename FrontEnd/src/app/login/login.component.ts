@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit{
     this.service.login(this.loginForm.value).subscribe(
       (response: Jwt) => {
         const jwToken = response.token;
-        console.log("role is :", response.role);
         localStorage.setItem('jwt', jwToken);
         localStorage.setItem('role', response.role);
         this.router.navigate(['/dashboard']);

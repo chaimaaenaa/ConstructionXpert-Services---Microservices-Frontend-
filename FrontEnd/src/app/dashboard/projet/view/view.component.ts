@@ -30,7 +30,7 @@ export class ViewComponent  implements OnInit {
 
 
   loadProjet(id:string):void{
-    this.projetService.getProjetById(parseInt(id)).subscribe(
+    this.projetService.getProjectById(parseInt(id)).subscribe(
       data => {
         this.projet = data;
       },

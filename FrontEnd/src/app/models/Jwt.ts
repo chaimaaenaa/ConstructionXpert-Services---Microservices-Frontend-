@@ -1,5 +1,5 @@
 export class Jwt{
     token! : string
-    role!: string; 
+    role!: string;
 
 }

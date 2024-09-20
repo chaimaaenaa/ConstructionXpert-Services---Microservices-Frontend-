@@ -8,9 +8,9 @@
     <div>
       <label for="typee">Type</label>
       <select id="typee" formControlName="typee">
-        <option value="Material">Material</option>
-        <option value="Human">Human</option>
-        <option value="Financial">Financial</option>
+        <option value="MATERIAL">Material</option>
+        <option value="SERVICE">Service</option>
+        <option value="TOOL">Tool</option>
       </select>
     </div>
 
@@ -23,7 +23,7 @@
       <label for="taskId">Task</label>
       <select id="taskId" formControlName="taskId">
         <option *ngFor="let task of tasks" [value]="task.id">
-          {{ task.description}}
+          {{ task.description }}
         </option>
       </select>
     </div>
