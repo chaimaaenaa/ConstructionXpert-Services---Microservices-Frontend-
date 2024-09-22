@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "task-service", url = "http://localhost:8083/api/tasks")
 public interface TaskClient {
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/deletebyprojet/{id}")
     ResponseEntity<Void> deleteTaskByIdProjet(@PathVariable Long id);
 
 
