@@ -1,0 +1,100 @@
+pipeline {
+    agent any
+
+    tools {
+       maven 'mvn'
+    }
+
+    environment {
+        DOCKER_HUB_REPO = 'zinebaz/constructionxpert-services'
+        DOCKER_IMAGE = 'constructionxpert'
+        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
+        SERVICES = ['discovery-service', 'Gateway_service', 'project-service', 'resource-service', 'task-service', 'Gestion_utilisateurs']
+        DOCKER_CREDENTIALS_ID = 'docker-credentials-id'
+        SONARQUBE = 'sonarqube-credentiels'
+        SONARQUBE_TOKEN = credentials('sonarqube-token')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/chaimaaenaa/ConstructionXpert-Services---Microservices-Frontend-.git'
+            }
+        }
+
+        stage('Build and Test') {
+            steps {
+                dir('ConstructionXpert') {
+                    bat 'mvn clean install'
+                    bat 'mvn test'
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                dir('ConstructionXpert') {
+                    withSonarQubeEnv(SONARQUBE) {
+                        bat "mvn sonar:sonar -Dsonar.token=${SONARQUBE_TOKEN}"
+                    }
+                }
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                script {
+                    def imageTag = "${env.BUILD_NUMBER}"
+                    for (service in SERVICES) {
+                        bat "docker build -t ${DOCKER_IMAGE}/${service}:${imageTag} ./${service}"
+                    }
+                }
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                script {
+                    def imageTag = "${env.BUILD_NUMBER}"
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
+                        for (service in SERVICES) {
+                            bat "docker push ${DOCKER_IMAGE}/${service}:${imageTag}"
+                        }
+                    }
+                }
+            }
+        }
+
+       stage('Quality Gate Check') {
+            steps {
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
+
+        stage('Tag and Push Docker Images') {
+            steps {
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                        SERVICES.each { service ->
+                            def imageName = "${DOCKER_HUB_REPO}/${service}"
+                            bat """
+                                docker tag ${DOCKER_IMAGE}/${service}:${env.BUILD_NUMBER} ${imageName}:latest
+                                docker push ${imageName}:latest
+                            """
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            junit '**/target/surefire-reports/*.xml'
+        }
+    }
+}
