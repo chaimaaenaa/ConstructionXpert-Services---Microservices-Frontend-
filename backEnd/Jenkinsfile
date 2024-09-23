@@ -24,7 +24,7 @@ pipeline {
 
         stage('Build and Test') {
             steps {
-                dir('ConstructionXpert') {
+                dir('backEnd') {
                     bat 'mvn clean install'
                     bat 'mvn test'
                 }
@@ -33,7 +33,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                dir('ConstructionXpert') {
+                dir('backEnd') {
                     withSonarQubeEnv(SONARQUBE) {
                         bat "mvn sonar:sonar -Dsonar.token=${SONARQUBE_TOKEN}"
                     }

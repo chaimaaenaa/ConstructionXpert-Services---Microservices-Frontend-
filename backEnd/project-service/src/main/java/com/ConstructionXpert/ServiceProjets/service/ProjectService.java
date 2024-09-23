@@ -1,7 +1,6 @@
 package com.ConstructionXpert.ServiceProjets.service;
 
 
-import com.ConstructionXpert.ServiceProjets.Config.TaskClient;
 import com.ConstructionXpert.ServiceProjets.model.Project;
 import com.ConstructionXpert.ServiceProjets.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import java.util.Optional;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final TaskClient taskClient;
 
     public Project createProject(Project project) {
         return projectRepository.save(project);
@@ -38,7 +36,6 @@ public class ProjectService {
     }
 
     public void deleteProject(Long id ) {
-        taskClient.deleteTaskByIdProjet(id);
         projectRepository.deleteById(id);;
     }
 
