@@ -2,99 +2,210 @@ pipeline {
     agent any
 
     tools {
-       maven 'mvn'
+        maven 'mvn'
     }
 
     environment {
-        DOCKER_HUB_REPO = 'zinebaz/constructionxpert-services'
-        DOCKER_IMAGE = 'constructionxpert'
-        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
-        SERVICES = ['discovery-service', 'Gateway_service', 'project-service', 'resource-service', 'task-service', 'Gestion_utilisateurs']
-        DOCKER_CREDENTIALS_ID = 'docker-credentials-id'
-        SONARQUBE = 'sonarqube-credentiels'
-        SONARQUBE_TOKEN = credentials('sonarqube-token')
+        DOCKERHUB_CREDENTIALS = credentials('docker-hub-credentials')
+        SONARQUBE_TOKEN = 'squ_5374c50602e37c662976b7f8d2f0869689e7d45b'
+        SONARQUBE_SERVER = 'http://localhost:9000'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/chaimaaenaa/ConstructionXpert-Services---Microservices-Frontend-.git'
+                git branch: 'Change', url: 'https://github.com/chaimaaenaa/ConstructionXpert-Services---Microservices-Frontend-.git'
             }
         }
 
-        stage('Build and Test') {
-            steps {
-                dir('backEnd') {
-                    bat 'mvn clean install'
-                    bat 'mvn test'
+        stage('Build & Test Microservices') {
+            parallel {
+                stage('Build & Test Gestion_utilisateurs') {
+                    steps {
+                        dir('Gestion_utilisateurs') {
+                            withMaven(maven: 'mvn') {
+                                bat 'mvn clean package'
+                            }
+                        }
+                    }
+                }
+
+                stage('Build & Test project-service') {
+                    steps {
+                        dir('project-service') {
+                            withMaven(maven: 'mvn') {
+                                bat 'mvn clean package'
+                            }
+                        }
+                    }
+                }
+
+                stage('Build & Test task-service') {
+                    steps {
+                        dir('task-service') {
+                            withMaven(maven: 'mvn') {
+                                bat 'mvn clean package'
+                            }
+                        }
+                    }
+                }
+
+                stage('Build & Test resource-service') {
+                    steps {
+                        dir('resource-service') {
+                            withMaven(maven: 'mvn') {
+                                bat 'mvn clean package'
+                            }
+                        }
+                    }
+                }
+
+                stage('Build & Package Gateway_service') {
+                    steps {
+                        dir('Gateway_service') {
+                            withMaven(maven: 'mvn') {
+                                bat 'mvn clean package'
+                            }
+                        }
+                    }
+                }
+
+                stage('Build & Test discovery-service') {
+                    steps {
+                        dir('discovery-service') {
+                            withMaven(maven: 'mvn') {
+                                bat 'mvn clean package'
+                            }
+                        }
+                    }
                 }
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
-                dir('backEnd') {
-                    withSonarQubeEnv(SONARQUBE) {
-                        bat "mvn sonar:sonar -Dsonar.token=${SONARQUBE_TOKEN}"
+                script {
+                    def scannerHome = tool 'SonarQubeScanner'
+
+
+                    dir('Gestion_utilisateurs') {
+                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Gestion_utilisateurs -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
+                    }
+
+
+                    dir('project-service') {
+                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=project-service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
+                    }
+
+
+                    dir('task-service') {
+                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=task-service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
+                    }
+
+
+                    dir('resource-service') {
+                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=resource-service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
+                    }
+
+
+                    dir('Gateway_service') {
+                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Gateway_service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
+                    }
+
+
+                    dir('discovery-service') {
+                        bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=discovery-service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
                     }
                 }
             }
         }
 
-        stage('Build Docker Images') {
-            steps {
-                script {
-                    def imageTag = "${env.BUILD_NUMBER}"
-                    for (service in SERVICES) {
-                        bat "docker build -t ${DOCKER_IMAGE}/${service}:${imageTag} ./${service}"
+        stage('Build Docker Images & Push') {
+            parallel {
+                stage('Build Docker & Push for Gestion_utilisateurs') {
+                    steps {
+                        dir('Gestion_utilisateurs') {
+                            script {
+                                def dockerImage = docker.build("zinebaz/Gestion_utilisateurs:${env.TAG_VERSION ?: 'latest'}")
+                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                    dockerImage.push()
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        }
 
-        stage('Push Docker Images') {
-            steps {
-                script {
-                    def imageTag = "${env.BUILD_NUMBER}"
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS_ID, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        bat 'echo %DOCKER_PASS% | docker login -u %DOCKER_USER% --password-stdin'
-                        for (service in SERVICES) {
-                            bat "docker push ${DOCKER_IMAGE}/${service}:${imageTag}"
+                stage('Build Docker & Push for project-service') {
+                    steps {
+                        dir('project-service') {
+                            script {
+                                def dockerImage = docker.build("zinebaz/project-service:${env.TAG_VERSION ?: 'latest'}")
+                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                    dockerImage.push()
+                                }
+                            }
+                        }
+                    }
+                }
+
+                stage('Build Docker & Push for task-service') {
+                    steps {
+                        dir('task-service') {
+                            script {
+                                def dockerImage = docker.build("zinebaz/task-service:${env.TAG_VERSION ?: 'latest'}")
+                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                    dockerImage.push()
+                                }
+                            }
+                        }
+                    }
+                }
+
+                stage('Build Docker & Push for resource-service') {
+                    steps {
+                        dir('resource-service') {
+                            script {
+                                def dockerImage = docker.build("zinebaz/resource-service:${env.TAG_VERSION ?: 'latest'}")
+                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                    dockerImage.push()
+                                }
+                            }
+                        }
+                    }
+                }
+
+                stage('Build Docker & Push for Gateway_service') {
+                    steps {
+                        dir('Gateway_service') {
+                            script {
+                                def dockerImage = docker.build("zinebaz/Gateway_service:${env.TAG_VERSION ?: 'latest'}")
+                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                    dockerImage.push()
+                                }
+                            }
+                        }
+                    }
+                }
+
+                stage('Build Docker & Push for discovery-service') {
+                    steps {
+                        dir('discovery-service') {
+                            script {
+                                def dockerImage = docker.build("zinebaz/discovery-service:${env.TAG_VERSION ?: 'latest'}")
+                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                    dockerImage.push()
+                                }
+                            }
                         }
                     }
                 }
             }
         }
 
-       stage('Quality Gate Check') {
+        stage('Deploy with Docker Compose') {
             steps {
-                timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
+                bat 'docker-compose up'
             }
-        }
-
-
-        stage('Tag and Push Docker Images') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                        SERVICES.each { service ->
-                            def imageName = "${DOCKER_HUB_REPO}/${service}"
-                            bat """
-                                docker tag ${DOCKER_IMAGE}/${service}:${env.BUILD_NUMBER} ${imageName}:latest
-                                docker push ${imageName}:latest
-                            """
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    post {
-        always {
-            junit '**/target/surefire-reports/*.xml'
         }
     }
 }

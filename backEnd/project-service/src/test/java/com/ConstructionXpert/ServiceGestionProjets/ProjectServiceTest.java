@@ -1,6 +1,5 @@
 package com.ConstructionXpert.ServiceGestionProjets;
 
-import com.ConstructionXpert.ServiceProjets.Config.TaskClient;
 import com.ConstructionXpert.ServiceProjets.model.Project;
 import com.ConstructionXpert.ServiceProjets.repository.ProjectRepository;
 import com.ConstructionXpert.ServiceProjets.service.ProjectService;
@@ -20,9 +19,6 @@ class ProjectServiceTest {
 
     @Mock
     private ProjectRepository projectRepository;
-
-    @Mock
-    private TaskClient taskClient;
 
     @InjectMocks
     private ProjectService projectService;
@@ -93,20 +89,19 @@ class ProjectServiceTest {
 
     // Test for deleteProject
     @Test
-
     void testDeleteProject() {
         Long projectId = 1L;
 
-        // Pas besoin de doNothing() pour ces appels
-        doNothing().when(taskClient).deleteTaskByIdProjet(projectId);
-        // Il n'est pas nécessaire de simuler explicitement projectRepository.deleteById(id)
-        // puisque c'est une méthode void.
+        // Simuler que le projet existe dans le dépôt
+        doNothing().when(projectRepository).deleteById(projectId);
+
+        // Appeler la méthode deleteProject dans ProjectService
         projectService.deleteProject(projectId);
 
-        // Vérifier que les méthodes correctes sont appelées une fois
-        verify(taskClient, times(1)).deleteTaskByIdProjet(projectId);
+        // Vérifier que la méthode deleteById a été appelée
         verify(projectRepository, times(1)).deleteById(projectId);
     }
+
     // Test for existProject
     @Test
     void testExistProject() {
