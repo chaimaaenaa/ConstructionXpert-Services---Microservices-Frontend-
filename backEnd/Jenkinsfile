@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'Change', url: 'https://github.com/chaimaaenaa/ConstructionXpert-Services---Microservices-Frontend-.git'
+                git branch: 'main', url: 'https://github.com/chaimaaenaa/ConstructionXpert-Services---Microservices-Frontend-.git'
             }
         }
 
@@ -22,7 +22,7 @@ pipeline {
             parallel {
                 stage('Build & Test Gestion_utilisateurs') {
                     steps {
-                        dir('Gestion_utilisateurs') {
+                        dir('backEnd/Gestion_utilisateurs') {
                             withMaven(maven: 'mvn') {
                                 bat 'mvn clean package'
                             }
@@ -32,7 +32,7 @@ pipeline {
 
                 stage('Build & Test project-service') {
                     steps {
-                        dir('project-service') {
+                        dir('backEnd/project-service') {
                             withMaven(maven: 'mvn') {
                                 bat 'mvn clean package'
                             }
@@ -42,7 +42,7 @@ pipeline {
 
                 stage('Build & Test task-service') {
                     steps {
-                        dir('task-service') {
+                        dir('backEnd/task-service') {
                             withMaven(maven: 'mvn') {
                                 bat 'mvn clean package'
                             }
@@ -52,7 +52,7 @@ pipeline {
 
                 stage('Build & Test resource-service') {
                     steps {
-                        dir('resource-service') {
+                        dir('backEnd/resource-service') {
                             withMaven(maven: 'mvn') {
                                 bat 'mvn clean package'
                             }
@@ -62,7 +62,7 @@ pipeline {
 
                 stage('Build & Package Gateway_service') {
                     steps {
-                        dir('Gateway_service') {
+                        dir('backEnd/Gateway_service') {
                             withMaven(maven: 'mvn') {
                                 bat 'mvn clean package'
                             }
@@ -72,7 +72,7 @@ pipeline {
 
                 stage('Build & Test discovery-service') {
                     steps {
-                        dir('discovery-service') {
+                        dir('backEnd/discovery-service') {
                             withMaven(maven: 'mvn') {
                                 bat 'mvn clean package'
                             }
@@ -87,33 +87,27 @@ pipeline {
                 script {
                     def scannerHome = tool 'SonarQubeScanner'
 
-
-                    dir('Gestion_utilisateurs') {
+                    dir('backEnd/Gestion_utilisateurs') {
                         bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Gestion_utilisateurs -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
                     }
 
-
-                    dir('project-service') {
+                    dir('backEnd/project-service') {
                         bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=project-service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
                     }
 
-
-                    dir('task-service') {
+                    dir('backEnd/task-service') {
                         bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=task-service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
                     }
 
-
-                    dir('resource-service') {
+                    dir('backEnd/resource-service') {
                         bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=resource-service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
                     }
 
-
-                    dir('Gateway_service') {
+                    dir('backEnd/Gateway_service') {
                         bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=Gateway_service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
                     }
 
-
-                    dir('discovery-service') {
+                    dir('backEnd/discovery-service') {
                         bat "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=discovery-service -Dsonar.sources=. -Dsonar.host.url=${SONARQUBE_SERVER} -Dsonar.login=${SONARQUBE_TOKEN} -Dsonar.java.binaries=target/classes"
                     }
                 }
@@ -124,7 +118,7 @@ pipeline {
             parallel {
                 stage('Build Docker & Push for Gestion_utilisateurs') {
                     steps {
-                        dir('Gestion_utilisateurs') {
+                        dir('backEnd/Gestion_utilisateurs') {
                             script {
                                 def dockerImage = docker.build("zinebaz/Gestion_utilisateurs:${env.TAG_VERSION ?: 'latest'}")
                                 docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
@@ -137,7 +131,7 @@ pipeline {
 
                 stage('Build Docker & Push for project-service') {
                     steps {
-                        dir('project-service') {
+                        dir('backEnd/project-service') {
                             script {
                                 def dockerImage = docker.build("zinebaz/project-service:${env.TAG_VERSION ?: 'latest'}")
                                 docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
@@ -150,7 +144,7 @@ pipeline {
 
                 stage('Build Docker & Push for task-service') {
                     steps {
-                        dir('task-service') {
+                        dir('backEnd/task-service') {
                             script {
                                 def dockerImage = docker.build("zinebaz/task-service:${env.TAG_VERSION ?: 'latest'}")
                                 docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
@@ -163,7 +157,7 @@ pipeline {
 
                 stage('Build Docker & Push for resource-service') {
                     steps {
-                        dir('resource-service') {
+                        dir('backEnd/resource-service') {
                             script {
                                 def dockerImage = docker.build("zinebaz/resource-service:${env.TAG_VERSION ?: 'latest'}")
                                 docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
@@ -176,7 +170,7 @@ pipeline {
 
                 stage('Build Docker & Push for Gateway_service') {
                     steps {
-                        dir('Gateway_service') {
+                        dir('backEnd/Gateway_service') {
                             script {
                                 def dockerImage = docker.build("zinebaz/Gateway_service:${env.TAG_VERSION ?: 'latest'}")
                                 docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
@@ -189,7 +183,7 @@ pipeline {
 
                 stage('Build Docker & Push for discovery-service') {
                     steps {
-                        dir('discovery-service') {
+                        dir('backEnd/discovery-service') {
                             script {
                                 def dockerImage = docker.build("zinebaz/discovery-service:${env.TAG_VERSION ?: 'latest'}")
                                 docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
