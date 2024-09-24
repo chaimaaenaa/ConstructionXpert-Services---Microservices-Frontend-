@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b6d64b5a-1827-4820-9dae-620bd0cc09d4" name="Changes" comment="">
+    <list default="true" id="a59fc9a7-27cd-4696-a0a8-62387672f469" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backEnd/Gateway_service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backEnd/Gateway_service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backEnd/Gestion_utilisateurs/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backEnd/Gestion_utilisateurs/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backEnd/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backEnd/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backEnd/project-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backEnd/project-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backEnd/resource-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backEnd/resource-service/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,10 +17,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
   "associatedIndex": 5
 }]]></component>
-  <component name="ProjectId" id="2mWDpjExdcQaXspd5bg1XmqooXz" />
+  <component name="ProjectId" id="2mWJCLVVpxdoo0ApvCsQsfBBV0d" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -39,9 +34,64 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "run.configurations.included.in.services": "true",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="MicronautRunConfigurationType" />
+        <option value="QuarkusRunConfigurationType" />
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Spring Boot.GatewayServiceApplication">
+    <configuration name="EurekaServerApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="eureka-server" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.constructionxpert.eureka.EurekaServerApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GatewayServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="Gateway_service" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.Gateway.GatewayServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="GestionUtilisateursApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="Gestion_utilisateurs" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.utilisateurs.GestionUtilisateursApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ResourceServiceApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="ServiceRessourc" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.resource.ResourceServiceApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServiceGestionProjetsApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="ServiceProjets" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ConstructionXpert.ServiceProjets.ServiceGestionProjetsApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ServiceTaskApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <module name="ServiceTask" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.ServiceTask.ServiceTaskApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -53,12 +103,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b6d64b5a-1827-4820-9dae-620bd0cc09d4" name="Changes" comment="" />
-      <created>1727183625979</created>
+      <changelist id="a59fc9a7-27cd-4696-a0a8-62387672f469" name="Changes" comment="" />
+      <created>1727186269675</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1727183625979</updated>
-      <workItem from="1727183628059" duration="331000" />
+      <updated>1727186269675</updated>
+      <workItem from="1727186270854" duration="337000" />
     </task>
     <servers />
   </component>
