@@ -84,7 +84,7 @@ services:
     ports:
       - "8084:8084"
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://admin:admin@discovery-service:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://userdb:3306/user_db
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=
@@ -123,7 +123,7 @@ services:
     image: "mysql:latest"
     restart: always
     environment:
-      MYSQL_DATABASE: tacheConstruction
+      MYSQL_DATABASE: task_db2
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     volumes:
       - tache-db:/var/lib/mysql
