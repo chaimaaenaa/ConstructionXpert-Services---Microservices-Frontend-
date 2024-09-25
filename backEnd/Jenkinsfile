@@ -114,87 +114,105 @@ pipeline {
             }
         }
 
-        stage('Build Docker Images & Push') {
-            parallel {
-                stage('Build Docker & Push for Gestion_utilisateurs') {
-                    steps {
-                        dir('backEnd/Gestion_utilisateurs') {
-                            script {
-                                def dockerImage = docker.build("zinebaz/user-service:${env.TAG_VERSION ?: 'latest'}")
-                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                                    dockerImage.push()
-                                }
-                            }
-                        }
-                    }
-                }
+         stage('Build Docker Images & Push') {
+                    parallel {
+                        stage('Build Docker & Push for Gestion_utilisateurs') {
+                            steps {
+                                dir('backEnd/Gestion_utilisateurs') {
+                                    script {
+                                        
+                                        bat 'docker context use default'
 
-                stage('Build Docker & Push for project-service') {
-                    steps {
-                        dir('backEnd/project-service') {
-                            script {
-                                def dockerImage = docker.build("zinebaz/projet-service:${env.TAG_VERSION ?: 'latest'}")
-                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                                    dockerImage.push()
+                                        def dockerImage = docker.build("zinebaz/user-service:${env.TAG_VERSION ?: 'latest'}")
+                                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                            dockerImage.push()
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                }
 
-                stage('Build Docker & Push for task-service') {
-                    steps {
-                        dir('backEnd/task-service') {
-                            script {
-                                def dockerImage = docker.build("zinebaz/tache-service:${env.TAG_VERSION ?: 'latest'}")
-                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                                    dockerImage.push()
-                                }
-                            }
-                        }
-                    }
-                }
+                        stage('Build Docker & Push for project-service') {
+                            steps {
+                                dir('backEnd/project-service') {
+                                    script {
 
-                stage('Build Docker & Push for resource-service') {
-                    steps {
-                        dir('backEnd/resource-service') {
-                            script {
-                                def dockerImage = docker.build("zinebaz/resource-service:${env.TAG_VERSION ?: 'latest'}")
-                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                                    dockerImage.push()
-                                }
-                            }
-                        }
-                    }
-                }
+                                        bat 'docker context use default'
 
-                stage('Build Docker & Push for Gateway_service') {
-                    steps {
-                        dir('backEnd/Gateway_service') {
-                            script {
-                                def dockerImage = docker.build("zinebaz/gateway-service:${env.TAG_VERSION ?: 'latest'}")
-                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                                    dockerImage.push()
+                                        def dockerImage = docker.build("zinebaz/projet-service:${env.TAG_VERSION ?: 'latest'}")
+                                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                            dockerImage.push()
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                }
 
-                stage('Build Docker & Push for discovery-service') {
-                    steps {
-                        dir('backEnd/discovery-service') {
-                            script {
-                                def dockerImage = docker.build("zinebaz/discovery-service:${env.TAG_VERSION ?: 'latest'}")
-                                docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
-                                    dockerImage.push()
+                        stage('Build Docker & Push for task-service') {
+                            steps {
+                                dir('backEnd/task-service') {
+                                    script {
+
+                                        bat 'docker context use default'
+
+                                        def dockerImage = docker.build("zinebaz/tache-service:${env.TAG_VERSION ?: 'latest'}")
+                                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                            dockerImage.push()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        stage('Build Docker & Push for resource-service') {
+                            steps {
+                                dir('backEnd/resource-service') {
+                                    script {
+
+                                        bat 'docker context use default'
+
+                                        def dockerImage = docker.build("zinebaz/resource-service:${env.TAG_VERSION ?: 'latest'}")
+                                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                            dockerImage.push()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        stage('Build Docker & Push for Gateway_service') {
+                            steps {
+                                dir('backEnd/Gateway_service') {
+                                    script {
+
+                                        bat 'docker context use default'
+
+                                        def dockerImage = docker.build("zinebaz/gateway-service:${env.TAG_VERSION ?: 'latest'}")
+                                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                            dockerImage.push()
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        stage('Build Docker & Push for discovery-service') {
+                            steps {
+                                dir('backEnd/discovery-service') {
+                                    script {
+
+                                        bat 'docker context use default'
+
+                                        def dockerImage = docker.build("zinebaz/discovery-service:${env.TAG_VERSION ?: 'latest'}")
+                                        docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                                            dockerImage.push()
+                                        }
+                                    }
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
 
         stage('Deploy with Docker Compose') {
             steps {
