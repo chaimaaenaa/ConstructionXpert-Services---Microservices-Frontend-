@@ -215,13 +215,13 @@ pipeline {
                 }
 
 
-        stage('Deploy with Docker Compose') {
-            steps {
-                dir('backEnd') {
-                    bat 'dir'
-                    bat 'docker-compose up'
-                }
-            }
-        }
+//         stage('Deploy with Docker Compose') {
+//             steps {
+//                 dir('backEnd') {
+//                     bat 'dir'
+//                     bat 'docker-compose up'
+//                 }
+//             }
+//         }
     }
 }
