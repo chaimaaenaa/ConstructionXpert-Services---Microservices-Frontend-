@@ -2,8 +2,6 @@ version: "3.8"
 
 services:
   discovery-service:
-    build:
-      context: ./discovery-service
     image: zinebaz/discovery-service:latest
     ports:
       - "8761:8761"
@@ -14,8 +12,6 @@ services:
       - microservices-net
 
   gateway-service:
-    build:
-      context: ./Gateway_service
     image: zinebaz/gateway-service:latest
     ports:
       - "8765:8765"
@@ -27,9 +23,7 @@ services:
       - microservices-net
 
   project-service:
-    build:
-      context: ./project-service
-    image: zinebaz/project-service:latest
+    image: zinebaz/projet-service:latest
     ports:
       - "8082:8082"
     environment:
@@ -44,8 +38,6 @@ services:
       - microservices-net
 
   ressource-service:
-    build:
-      context: ./resource-service
     image: zinebaz/resource-service:latest
     ports:
       - "8080:8080"
@@ -61,9 +53,7 @@ services:
       - microservices-net
 
   tache-service:
-    build:
-      context: ./task-service
-    image: zinebaz/task-service:latest
+    image: zinebaz/tache-service:latest
     ports:
       - "8083:8083"
     environment:
@@ -78,9 +68,7 @@ services:
       - microservices-net
 
   user-service:
-    build:
-      context: ./Gestion_utilisateurs
-    image: zinebaz/gestion_utilisateurs:latest
+    image: zinebaz/user-service:latest
     ports:
       - "8084:8084"
     environment:
