@@ -120,7 +120,7 @@ pipeline {
                             steps {
                                 dir('backEnd/Gestion_utilisateurs') {
                                     script {
-                                        
+
                                         bat 'docker context use default'
 
                                         def dockerImage = docker.build("zinebaz/user-service:${env.TAG_VERSION ?: 'latest'}")
@@ -214,9 +214,13 @@ pipeline {
                     }
                 }
 
+
         stage('Deploy with Docker Compose') {
             steps {
-                bat 'docker-compose up'
+                dir('backEnd') {
+                    bat 'dir'
+                    bat 'docker-compose up'
+                }
             }
         }
     }
