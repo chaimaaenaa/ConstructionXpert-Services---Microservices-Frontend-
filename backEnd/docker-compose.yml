@@ -15,7 +15,8 @@ services:
     depends_on:
       - discovery-service
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/
+
     networks:
       - microservices-net
 
@@ -24,7 +25,7 @@ services:
     ports:
       - "8082:8082"
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://projetdb:3306/projets_db2
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=
@@ -39,7 +40,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://ressourcedb:3306/resource_db2
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=
@@ -54,7 +55,7 @@ services:
     ports:
       - "8083:8083"
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://tachedb:3306/task_db2
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=
@@ -69,7 +70,7 @@ services:
     ports:
       - "8084:8084"
     environment:
-      - eureka.client.serviceUrl.defaultZone=http://localhost:8761/eureka/
+      - eureka.client.serviceUrl.defaultZone=http://discovery-service:8761/eureka/
       - SPRING_DATASOURCE_URL=jdbc:mysql://userdb:3306/user_db
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=
