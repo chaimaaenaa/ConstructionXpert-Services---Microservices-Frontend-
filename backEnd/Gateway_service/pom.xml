@@ -17,10 +17,6 @@
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.3</spring-cloud.version>
 
-			<sonar.host.url>http://localhost:9000/</sonar.host.url>
-			<sonar.login>sqa_b834ade26b043d2c6aeaf9d45f3ae9cfab958234</sonar.login>
-
-
 	</properties>
 	<dependencies>
 		<dependency>
