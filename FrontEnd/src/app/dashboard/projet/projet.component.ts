@@ -2,8 +2,8 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Projet } from 'src/app/models/projet';
 import { ProjetService } from 'src/app/services/projet.service';
 import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-projet',
@@ -15,32 +15,39 @@ export class ProjetComponent implements OnInit, AfterViewInit {
   projets: Projet[] = [];
   dataSource = new MatTableDataSource<Projet>([]);
   displayColumns = ["id", "name", "startDate", "endDate", "description", "budget", "action"];
-  selection = new SelectionModel<Projet>(true, []);
+  totalProjects: number = 0;
+  pageSize: number = 5;
+  currentPage: number = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(
-    private projetService: ProjetService
-  ) {}
+  constructor(private projetService: ProjetService) {}
 
   ngOnInit() {
-    this.loadProjets();
+    this.loadProjectsPaginated(this.currentPage, this.pageSize);
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
   }
 
-  loadProjets() {
-    this.projetService.getAllProjects().subscribe(
-      (data: Projet[]) => {
-        this.projets = data;
+  loadProjectsPaginated(page: number, size: number) {
+    this.projetService.getPaginatedProjects(page, size).subscribe(
+      (response: any) => {
+        this.projets = response.content;
         this.dataSource.data = this.projets;
-        console.log(this.projets);
+        this.totalProjects = response.totalElements; // For paginator
       },
-      (error: any) => { // Specify the type of error if possible
-        console.log('Error fetching projets', error);
+      (error: any) => {
+        console.log('Error fetching paginated projects', error);
       }
     );
+  }
+
+  // Called when paginator is used
+  handlePageEvent(event: PageEvent) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadProjectsPaginated(this.currentPage, this.pageSize);
   }
 }

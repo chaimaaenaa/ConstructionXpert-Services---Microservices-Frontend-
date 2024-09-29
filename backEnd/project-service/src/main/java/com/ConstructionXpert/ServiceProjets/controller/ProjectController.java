@@ -48,4 +48,11 @@ public class ProjectController {
         boolean exist = projectService.existProject(id);
         return ResponseEntity.ok(exist);
     }
+
+    public ResponseEntity<Page<Project>> getPaginatedProjects(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Page<Project> paginatedProjects = projectService.getPaginatedProjects(page, size);
+        return ResponseEntity.ok(paginatedProjects);
+    }
 }
